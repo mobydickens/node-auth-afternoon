@@ -19,15 +19,48 @@ export default class Container extends Component {
   }
 
   getDragonTreasure() {
-    // axios GET to /api/treasure/dragon here
+    console.log('running?')
+    axios
+      .get('/api/treasure/dragon').then(treasure => {
+        this.setState({
+          treasures: { 
+            ...this.state.treasures,
+            dragon: treasure.data
+          }
+        })
+      }).catch(err => {
+        console.log("error in get Dragon Treasure!", err);
+    })
   }
 
   getAllTreasure() {
     // axios GET to /api/treasure/all here
+    axios
+      .get('/api/treasure/all').then((treasure) => {
+        this.setState({
+          treasures: {
+            ... this.state.treasures,
+            all: treasure.data
+          }
+        })
+      }).catch(err => {
+        alert(err.response.request.response);
+      })
   }
 
   getMyTreasure() {
     // axios GET to /api/treasure/user here
+    axios
+      .get('/api/treasure/user').then(treasure => {
+        this.setState({
+          treasures: {
+            ... this.state.treasures,
+            user: treasure.data
+          }
+      })
+    }).catch(err => {
+      alert(err.response.request.response);
+    })
   }
 
   addMyTreasure(newMyTreasure) {
@@ -40,6 +73,7 @@ export default class Container extends Component {
   }
 
   render() {
+    console.log(this.state.treasures)
     const { username } = this.props.user;
     const { dragon, user, all } = this.state.treasures;
     return (
@@ -51,7 +85,7 @@ export default class Container extends Component {
           </div>
         ) : (
           <div className="treasureBox">
-            <button className="title" onClick={() => this.getDragonTreasure()}>
+            <button className="title" onClick={() => this.getDragonTreasure() }>
               See Dragon's <br /> Treasure
             </button>
             <p>This treasure trove does not require a user to be logged in for access</p>
